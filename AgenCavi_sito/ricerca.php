@@ -17,23 +17,28 @@
 	}
 	
 	if(isset($_GET["prod"])){
-		$prod_id = intval($_GET["prod"]);
-		include "/Librerie/funzioni_mysql.php";
-		$data = new MysqlClass();
+		$prod_id = $_GET["prod"];
 		
-		$data->connetti();
+		$file = 'http://127.0.0.1/AgenCavi_sito/"$prod_id".pdf';
+		$file_headers = @get_headers($file);
+		if( strcmp($file_headers[0],'HTTP/1.1 404 Not Found') != 0 ) {
+			$exists = false;
+		}
+		else {
+			$exists = true;
+		}
 		
-		$aut = $data->query("SELECT url_pdf,nome FROM ag_prodotti WHERE ID='$prod_id'");
-		
-		if(mysql_num_rows($aut) > 0){
-			$go_to = $data->estrai($aut) -> url_pdf;
+		if($exists){
+			include "/Librerie/funzioni_mysql.php";
+			$data = new MysqlClass();
+			$data->connetti();
 			
 			//salvataggio nella tabella di log
 			$id_utente = substr($_SESSION["login"],0);
 			
 			$t = "log"; # nome della tabella
 			$v = array ($id_utente,$prod_id); # valori da inserire
-			$r =  "id_utente,id_prodotto"; # campi da popolare
+			$r =  "user_name,prodotto"; # campi da popolare
 			
 			$data->inserisci($t,$v,$r);
 			
@@ -42,7 +47,7 @@
 			 
 			 //APRIN NUOVA FINESTRA COL PDF
 			echo 	('<script type="text/javascript" language="javascript"> 
-					var win = window.open("http://127.0.0.1/wordpress/' . (string)$go_to.'");
+					var win = window.open("http://127.0.0.1/AgenCavi_sito/'.(string)$prod_id .'.pdf");
 					if(win){
 						win.focus();
 					}else{
@@ -215,6 +220,8 @@ var BP_DTheme = {"accepted":"Accepted","close":"Close","comments":"comments","le
 							</form>
 							<h3 style="padding:10px; color:orange; font-size:150%;"> Cercati di recente </h3>
 							<ul align="justify" style="padding:20px;">
+							
+							
 								<?php
 									if(!isset($_GET["prod"])){
 												include "/Librerie/funzioni_mysql.php";
@@ -223,23 +230,23 @@ var BP_DTheme = {"accepted":"Accepted","close":"Close","comments":"comments","le
 									}
 									$data->connetti();
 									
-									$aut = $data->query("SELECT * FROM ag_prodotti as a JOIN 
-									(SELECT DISTINCT id_prodotto FROM `log` WHERE id_utente = " . (string)$_SESSION['login'] ." ORDER BY time_stamp DESC LIMIT 5) as p 
-									ON a.ID = p.id_prodotto
-									");
+									$aut = $data->query("SELECT DISTINCT prodotto FROM `log` WHERE user_name = " . (string)$_SESSION['login'] ." ORDER BY time_stamp DESC LIMIT 5");
+									
 									if(!mysql_num_rows($aut)){
 										echo "Non hai mai effettuato una ricerca! Provala Ora!!";
 									}
 									while($res = $data->estrai($aut)){
 									
 										echo "<li>
-											<a href='".(string)$_SERVER['PHP_SELF']."?prod=" . (string)$res->ID . "'> $res->ID </a>
+											<a href='".(string)$_SERVER['PHP_SELF']."?prod=" . (string)$res->prodotto . "'> $res->prodotto </a>
 											</li>
 										
 										";
 									}
 									$data->disconnetti();
 								?>
+								
+								
 							</ul>
 							<a href="disc.php">logout</a>
 						</div>
