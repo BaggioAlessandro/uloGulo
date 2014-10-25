@@ -3,9 +3,9 @@ class MysqlClass
 {
 	// parametri per la connessione al database
 	private $nomehost = "127.0.0.1";     
-	private $nomeuser = "1";          
-	private $password = "2"; 
-	private $nomedb = "wordpress";
+	private $nomeuser = "root";          
+	private $password = ""; 
+	private $nomedb = "agencavi_sito";
 			  
 	// controllo sulle connessioni attive
 	private $attiva = false;

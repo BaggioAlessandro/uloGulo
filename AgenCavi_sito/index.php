@@ -30,7 +30,7 @@
 		$user_name = $_POST["user"];
 		$password = trim($_POST["password"], FILTER_SANITIZE_STRING);
 		
-		include "\Librerie\funzioni_mysql.php";
+		include "/Librerie/funzioni_mysql.php";
 		 
 		$data = new MysqlClass();
 

@@ -3,62 +3,57 @@
 	
 	from: parametro passato con GET. serve a reindirizzare l'utente dopo il login nel caso in cui arrivi da QR_CODE
 	
-	user: nome utente passato in POST
+	prod: prodotto ricercato passato in GET
 	
 	password: password passata in POST
 
 -->
 
 <?php
-	//la grafica di questa pagina è presa da quella del sito vecchio
+	//IL CODICE PHP LO DEVO ANCORA SISTEMARE PER QUESTA PAGINA
 	session_start();
-	
-	//se esiste una connessione vai alla pagina delle ricerche
-	if(isset($_SESSION['login'])){
-		header("Location: ricerca.php");
+	if(!isset($_SESSION["login"])){
+		header("Location: index.php?from=".$_SERVER["PHP_SELF"]);
 	}
 	
-	//salvataggio pagina di provenienza
-	if(isset($_GET['from'])){
-		$go_to = $_GET['from'];
-	}else{
-		$go_to = "ricerca.php";
-	}
-	
-	if(isset($_POST['submit']) && trim($_POST['submit']=="Login")){
-		echo($_POST["user"]);
-		$user_name = $_POST["user"];
-		$password = trim($_POST["password"], FILTER_SANITIZE_STRING);
-		
-		include "\Librerie\funzioni_mysql.php";
-		 
+	if(isset($_GET["prod"])){
+		$prod_id = intval($_GET["prod"]);
+		include "/Librerie/funzioni_mysql.php";
 		$data = new MysqlClass();
-
-		if($data->connetti()){
-			$aut = $data->query("SELECT user_name,password FROM utenti WHERE user_name='$user_name'");
-			
-			if(mysql_num_rows($aut) == 0 ){
-				echo "$user_name";
-				echo("nome utente inesistente");
-			
-			}else{
-				$ris = $data->estrai($aut);
-				if(strcmp($ris->password,$password)==0){
-					$_SESSION["login"] = $ris->user_name;
-					header("Location: ".$go_to);
-				
-				}else{
-					echo "password errata";
-				}
-				
-				$data->disconnetti();
-				
-				
-			}
-		}else{
-			echo("errore di connessione");
-		}
 		
+		$data->connetti();
+		
+		$aut = $data->query("SELECT url_pdf,nome FROM ag_prodotti WHERE ID='$prod_id'");
+		
+		if(mysql_num_rows($aut) > 0){
+			$go_to = $data->estrai($aut) -> url_pdf;
+			
+			//salvataggio nella tabella di log
+			$id_utente = substr($_SESSION["login"],0);
+			
+			$t = "log"; # nome della tabella
+			$v = array ($id_utente,$prod_id); # valori da inserire
+			$r =  "id_utente,id_prodotto"; # campi da popolare
+			
+			$data->inserisci($t,$v,$r);
+			
+			$data->disconnetti();
+			//reindirizzamento al file cercato
+			 
+			 //APRIN NUOVA FINESTRA COL PDF
+			echo 	('<script type="text/javascript" language="javascript"> 
+					var win = window.open("http://127.0.0.1/wordpress/' . (string)$go_to.'");
+					if(win){
+						win.focus();
+					}else{
+
+						alert("Please allow popups for this site");
+					}
+					</script>'); 
+
+		}else{
+			echo("nessun prodotto trovato");
+		}
 	}
 ?>
 <!DOCTYPE html>
@@ -208,18 +203,45 @@ var BP_DTheme = {"accepted":"Accepted","close":"Close","comments":"comments","le
 						<div >
 							<h1 class="art-postheader"> Area Clienti </h1>
 							<p align="justify" style="padding:20px;">Sezione riservata a clienti Agencavi System. Per richiedere i dati di accesso, contattare direttamente la societ&agrave;</p>
-							<h3 style="padding:20px; color:orange; font-size:170%;"> Login </h3>
-							<form style="text-align: left;" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+							<h3 style="padding:10px; color:orange; font-size:150%;"> Cerca Collaudo </h3>
+							<form style="text-align: left;" method="GET">
 								<table style="padding:20px;">
 									<tr><td>
-									Nome Utente:</td><td> <input type="int" style="width:250px;" name="user"/></td></tr>
-									<tr><td>
-									Password:</td><td> <input type="password" style="width:250px;" name="password"/></td></tr>
+									Inserire il codice del componente:</td><td> <input type="text" name="prod" style="width:250px;"/></td></tr>
 									<tr><td colspan=2>
-									<input type="submit" name="submit" value="Login" />
+									<input type="submit" value="submit" />
 									</td></tr>
 								</table>
 							</form>
+							<h3 style="padding:10px; color:orange; font-size:150%;"> Cercati di recente </h3>
+							<ul align="justify" style="padding:20px;">
+								<?php
+									if(!isset($_GET["prod"])){
+												include "/Librerie/funzioni_mysql.php";
+										$data = new MysqlClass();
+									
+									}
+									$data->connetti();
+									
+									$aut = $data->query("SELECT * FROM ag_prodotti as a JOIN 
+									(SELECT DISTINCT id_prodotto FROM `log` WHERE id_utente = " . (string)$_SESSION['login'] ." ORDER BY time_stamp DESC LIMIT 5) as p 
+									ON a.ID = p.id_prodotto
+									");
+									if(!mysql_num_rows($aut)){
+										echo "Non hai mai effettuato una ricerca! Provala Ora!!";
+									}
+									while($res = $data->estrai($aut)){
+									
+										echo "<li>
+											<a href='".(string)$_SERVER['PHP_SELF']."?prod=" . (string)$res->ID . "'> $res->ID </a>
+											</li>
+										
+										";
+									}
+									$data->disconnetti();
+								?>
+							</ul>
+							<a href="disc.php">logout</a>
 						</div>
 			
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- STOP -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
