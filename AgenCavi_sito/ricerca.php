@@ -57,7 +57,10 @@
 					</script>'); 
 
 		}else{
-			echo("nessun prodotto trovato");
+			//PANNELLO PRODOTTO NON TROVATO
+			echo	('<script type="text/javascript" language="javascript"> 
+					
+					</script>');
 		}
 	}
 	
