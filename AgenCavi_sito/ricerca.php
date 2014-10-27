@@ -22,7 +22,7 @@
 		
 		$file = 'http://127.0.0.1/AgenCavi_sito/"$prod_id".pdf';
 		$file_headers = @get_headers($file);
-		if( strcmp($file_headers[0],'HTTP/1.1 404 Not Found') != 0 ) {
+		if( strcmp($file_headers[0],'HTTP/1.0 404 Not Found"') != 0 ) {
 			$exists = false;
 		}
 		else {
@@ -87,10 +87,10 @@ ac_initSection("Show/Hide", true, false);
 							
 								<?php
 									if(!isset($_GET["prod"])){
-												include "/Librerie/funzioni_mysql.php";
-										$data = new MysqlClass();
+												
 									
 									}
+									$data = new MysqlClass();
 									$data->connetti();
 									
 									$aut = $data->query("SELECT DISTINCT prodotto FROM `log` WHERE user_name = " . (string)$_SESSION['login'] ." ORDER BY time_stamp DESC LIMIT 5");
