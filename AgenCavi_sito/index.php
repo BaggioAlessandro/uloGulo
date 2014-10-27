@@ -66,17 +66,12 @@
 <?php
 	include "/lib/ac_base.php";
 	ac_header();
+	ac_initSection("Show/Hide", true, false);
 ?>
-<body>
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- SCRIVI LA TUA ROBA QUI' -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
-	<div id="ac-container">
-		<div class="ac-content-box">
-			<div class="ac-content-handle">
-				Show/Hide
-			</div>
-			<div class="ac-content">
-				<h1 class="art-postheader"> Area Clienti </h1>
-				<p align="justify" style="padding:20px;">Sezione riservata a clienti Agencavi System. Per richiedere i dati di accesso, contattare direttamente la societ&agrave;</p>
+		
+				<h1 class="art-postheader"> Login </h1>
+				<p align="justify" style="padding:20px;">Sezione riservata a proprietari di cavi siglati</p>
 				<h3 style="padding:20px; color:orange; font-size:170%;"> Login </h3>
 				<form style="text-align: left;" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
 					<table style="padding:20px;">
@@ -89,20 +84,27 @@
 						</td></tr>
 					</table>
 				</form>
-			</div>
-		</div>
-	</div>
+<?php
+	ac_finalizeSection();
+	ac_initSection("Registrazione", false, true);
+?>
+				<h1 class="art-postheader"> Registrati </h1>
+				<p align="justify" style="padding:20px;">Invia una richiesta di registrazione, un'e-mail ti notificher&agrave; l'avvenuta accettazione</p>
+				<h3 style="padding:20px; color:orange; font-size:170%;"> Login </h3>
+				<form style="text-align: left;" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+					<table style="padding:20px;">
+						<tr><td>
+						Nome Utente:</td><td> <input type="int" style="width:250px;" name="user"/></td></tr>
+						<tr><td>
+						Password:</td><td> <input type="password" style="width:250px;" name="password"/></td></tr>
+						<tr><td colspan=2>
+						<input type="submit" name="submit" value="Login" />
+						</td></tr>
+					</table>
+				</form>
+<?php
+	ac_finalizeSection();
+	ac_footer();
+?>
 	
-	<script>
-		$( ".ac-content-handle" ).click(function () {
-			var el = $( this ).parent().children(".ac-content");
-			if ( el.is( ":hidden" ) ) {
-				el.slideDown( "slow" );
-			} else {
-				el.slideUp( "slow" );
-			}
-		});
-	</script>
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- STOP -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
-</body>
-</html>
