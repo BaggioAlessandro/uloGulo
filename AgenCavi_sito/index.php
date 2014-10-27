@@ -69,22 +69,40 @@
 ?>
 <body>
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- SCRIVI LA TUA ROBA QUI' -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
-	<div >
-		<h1 class="art-postheader"> Area Clienti </h1>
-		<p align="justify" style="padding:20px;">Sezione riservata a clienti Agencavi System. Per richiedere i dati di accesso, contattare direttamente la societ&agrave;</p>
-		<h3 style="padding:20px; color:orange; font-size:170%;"> Login </h3>
-		<form style="text-align: left;" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
-			<table style="padding:20px;">
-				<tr><td>
-				Nome Utente:</td><td> <input type="int" style="width:250px;" name="user"/></td></tr>
-				<tr><td>
-				Password:</td><td> <input type="password" style="width:250px;" name="password"/></td></tr>
-				<tr><td colspan=2>
-				<input type="submit" name="submit" value="Login" />
-				</td></tr>
-			</table>
-		</form>
+	<div id="ac-container">
+		<div class="ac-content-box">
+			<div class="ac-content-handle">
+				Show/Hide
+			</div>
+			<div class="ac-content">
+				<h1 class="art-postheader"> Area Clienti </h1>
+				<p align="justify" style="padding:20px;">Sezione riservata a clienti Agencavi System. Per richiedere i dati di accesso, contattare direttamente la societ&agrave;</p>
+				<h3 style="padding:20px; color:orange; font-size:170%;"> Login </h3>
+				<form style="text-align: left;" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+					<table style="padding:20px;">
+						<tr><td>
+						Nome Utente:</td><td> <input type="int" style="width:250px;" name="user"/></td></tr>
+						<tr><td>
+						Password:</td><td> <input type="password" style="width:250px;" name="password"/></td></tr>
+						<tr><td colspan=2>
+						<input type="submit" name="submit" value="Login" />
+						</td></tr>
+					</table>
+				</form>
+			</div>
+		</div>
 	</div>
+	
+	<script>
+		$( ".ac-content-handle" ).click(function () {
+			var el = $( this ).parent().children(".ac-content");
+			if ( el.is( ":hidden" ) ) {
+				el.slideDown( "slow" );
+			} else {
+				el.slideUp( "slow" );
+			}
+		});
+	</script>
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- STOP -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
 </body>
 </html>
