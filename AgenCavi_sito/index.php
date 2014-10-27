@@ -1,4 +1,5 @@
 <!--
+	Modifice a culo al file di baggio
 	PARAMETRI USATI:
 	
 	from: parametro passato con GET. serve a reindirizzare l'utente dopo il login nel caso in cui arrivi da QR_CODE
