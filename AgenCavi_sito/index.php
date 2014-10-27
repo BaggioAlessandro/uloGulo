@@ -70,13 +70,11 @@
 ?>
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- SCRIVI LA TUA ROBA QUI' -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
 		
-				<h1 class="art-postheader"> Login </h1>
-				<p align="justify" style="padding:20px;">Sezione riservata a proprietari di cavi siglati</p>
-				<h3 style="padding:20px; color:orange; font-size:170%;"> Login </h3>
-				<form style="text-align: left;" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+				<h1> Login </h1>
+				<form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
 					<table style="padding:20px;">
 						<tr><td>
-						Nome Utente:</td><td> <input type="int" style="width:250px;" name="user"/></td></tr>
+						Nome Utente:</td><td> <input type="text" style="width:250px;" name="user"/></td></tr>
 						<tr><td>
 						Password:</td><td> <input type="password" style="width:250px;" name="password"/></td></tr>
 						<tr><td colspan=2>
@@ -86,19 +84,23 @@
 				</form>
 <?php
 	ac_finalizeSection();
-	ac_initSection("Registrazione", false, true);
+	ac_initSection("Se non sei registrato, clicca qu&igrave; per registrarti", false, true);
 ?>
-				<h1 class="art-postheader"> Registrati </h1>
-				<p align="justify" style="padding:20px;">Invia una richiesta di registrazione, un'e-mail ti notificher&agrave; l'avvenuta accettazione</p>
-				<h3 style="padding:20px; color:orange; font-size:170%;"> Login </h3>
+				<h1> Registrati </h1>
+				<p>Invia una richiesta di registrazione, un'e-mail ti notificher&agrave; l'inoltro della richiesta, nel giro di qualche giorno una seconda e-mail ti comunicher&agrave; i tuoi dati di accesso.</p>
+				<p class="ac-important">Compila tutti i campi</p>
 				<form style="text-align: left;" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
 					<table style="padding:20px;">
 						<tr><td>
-						Nome Utente:</td><td> <input type="int" style="width:250px;" name="user"/></td></tr>
+						Nome:</td><td> <input type="text" style="width:250px;" name="nome"/></td></tr>
 						<tr><td>
-						Password:</td><td> <input type="password" style="width:250px;" name="password"/></td></tr>
+						Societ&agrave;:</td><td> <input type="text" style="width:250px;" name="societa"/></td></tr>
+						<tr><td>
+						e-mail:</td><td> <input type="text" style="width:250px;" name="email"/></td></tr>
+						<tr><td>
+						Telefono:</td><td> <input type="text" style="width:250px;" name="telefono"/></td></tr>
 						<tr><td colspan=2>
-						<input type="submit" name="submit" value="Login" />
+						<input type="submit" name="submit" value="Invia Richiesta" />
 						</td></tr>
 					</table>
 				</form>
