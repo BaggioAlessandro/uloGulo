@@ -65,7 +65,7 @@
 ?>
 <?php
 	include "/lib/ac_base.php";
-	ac_header();
+	ac_header("m.index.php");
 	ac_initSection("Show/Hide", true, false);
 ?>
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- SCRIVI LA TUA ROBA QUI' -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
