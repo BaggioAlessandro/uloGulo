@@ -63,14 +63,10 @@
 		
 	}
 ?>
-<!DOCTYPE html>
-<html lang="it-IT">
-<head>
-<meta charset="UTF-8" />
-<title>CableCheck</title>
-<link href = "stile.css" rel = "stylesheet" type = "text/css" >
-<meta http-equiv="Content-Language" content="it-IT" />
-</head>
+<?php
+	include "/lib/ac_base.php";
+	ac_header();
+?>
 <body>
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- SCRIVI LA TUA ROBA QUI' -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
 	<div >
