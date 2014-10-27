@@ -10,6 +10,7 @@
 -->
 
 <?php
+	include "/lib/funzioni_mysql.php";
 	//IL CODICE PHP LO DEVO ANCORA SISTEMARE PER QUESTA PAGINA
 	session_start();
 	if(!isset($_SESSION["login"])){
@@ -29,7 +30,6 @@
 		}
 		
 		if($exists){
-			include "/Librerie/funzioni_mysql.php";
 			$data = new MysqlClass();
 			$data->connetti();
 			
