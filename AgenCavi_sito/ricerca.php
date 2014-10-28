@@ -36,7 +36,7 @@ function redirect_post($url, array $data, array $headers = null) {
 	<?php
 }
 	
-	$var = "display: none;";
+	$error_message = "";
 	//IL CODICE PHP LO DEVO ANCORA SISTEMARE PER QUESTA PAGINA
 	session_start();
 	if(!isset($_SESSION["login"])){
@@ -85,7 +85,7 @@ function redirect_post($url, array $data, array $headers = null) {
 
 		}else{
 			//PANNELLO PRODOTTO NON TROVATO
-			$var = "display: block;";
+			$error_message = "<p style='color:red;'>password errata</p>";
 		}
 	}
 	
@@ -97,11 +97,11 @@ ac_initSection("Show/Hide", true, false);
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- SCRIVI LA TUA ROBA QUI' -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
 
 						<div >
-							<h1 class="art-postheader"> Area Clienti </h1>
-							<p align="justify" style="padding:20px;">Sezione riservata a clienti Agencavi System. Per richiedere i dati di accesso, contattare direttamente la societ&agrave;</p>
-							<h3 style="padding:10px; color:orange; font-size:150%;"> Cerca Collaudo </h3>
-							<form style="text-align: left;" method="GET">
-								<table style="padding:20px;">
+							<h1> Area Clienti </h1>
+							<p>Sezione riservata a clienti Agencavi System. Per richiedere i dati di accesso, contattare direttamente la societ&agrave;</p>
+							<h3> Cerca Collaudo </h3>
+							<form method="GET">
+								<table >
 									<tr><td>
 									Inserire il codice del componente:</td><td> <input type="text" name="prod" style="width:250px;"/></td></tr>
 									<tr><td colspan=2>
@@ -110,12 +110,10 @@ ac_initSection("Show/Hide", true, false);
 								</table>
 							</form>
 							
-							<p id="error_message" style="color: red; <?php echo $var; ?>" >
-								Prodotto non trovato
-							</p>
+							<?php echo $error_message; ?>
 							
-							<h3 style="padding:10px; color:orange; font-size:150%;"> Cercati di recente </h3>
-							<ul align="justify" style="padding:20px;">
+							<h3> Cercati di recente </h3>
+							<ul>
 							
 							
 								<?php
