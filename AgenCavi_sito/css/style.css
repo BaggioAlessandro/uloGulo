@@ -24,7 +24,7 @@ body{
 	margin-right: auto;
 	margin-top: 20px;
 	background-color: rgba(255,255,255,0.7);
-	border: 5px ridge rgb(200,200,200);
+	border: 5px ridge rgb(200,200,255);
 }
 
 .ac-important{
