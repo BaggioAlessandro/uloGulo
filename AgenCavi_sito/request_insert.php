@@ -28,7 +28,7 @@
 			$r =  "nome,password,mail,azienda,user_name"; # campi da popolare
 		}
 
-		if(ac_mail($email,$password)){
+		if(ac_mail_no-reply($email,"Password",$password)){
 			$data->inserisci($t,$v,$r);
 		}
 		
