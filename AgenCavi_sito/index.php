@@ -30,6 +30,7 @@
 	}
 	
 	if(isset($_POST['submit']) && trim($_POST['submit']=="Login")){
+		str_replace($_POST["user"], '@', '\@');
 		echo($_POST["user"]);
 		$user_name = $_POST["user"];
 		$password = trim($_POST["password"], FILTER_SANITIZE_STRING);
@@ -94,7 +95,7 @@
 				<h1> Registrati </h1>
 				<p>Invia una richiesta di registrazione, un'e-mail ti notificher&agrave; l'inoltro della richiesta, nel giro di qualche giorno una seconda e-mail ti comunicher&agrave; i tuoi dati di accesso.</p>
 				<p class="ac-important">Compila tutti i campi</p>
-				<form style="text-align: left;" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+				<form style="text-align: left;" method="POST" action="request_insert.php">
 					<table style="padding:20px;">
 						<tr><td>
 						Nome:</td><td> <input type="text" style="width:250px;" name="nome"/></td></tr>

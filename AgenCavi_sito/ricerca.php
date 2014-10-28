@@ -85,7 +85,7 @@ function redirect_post($url, array $data, array $headers = null) {
 
 		}else{
 			//PANNELLO PRODOTTO NON TROVATO
-			$error_message = "<p style='color:red;'>password errata</p>";
+			$error_message = "<p style='color:red;'>prodotto inesistente</p>";
 		}
 	}
 	
@@ -124,7 +124,7 @@ ac_initSection("Show/Hide", true, false);
 									$data = new MysqlClass();
 									$data->connetti();
 									
-									$aut = $data->query("SELECT DISTINCT prodotto FROM `log` WHERE user_name = " . (string)$_SESSION['login'] ." ORDER BY time_stamp DESC LIMIT 5");
+ 									$aut = $data->query("SELECT DISTINCT prodotto FROM `log` WHERE user_name = '" . (string)$_SESSION['login'] ."' ORDER BY time_stamp DESC LIMIT 5");
 									
 									if(!mysql_num_rows($aut)){
 										echo "Non hai mai effettuato una ricerca! Provala Ora!!";
