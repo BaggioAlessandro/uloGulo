@@ -11,7 +11,8 @@
 -->
 
 <?php
-
+	$MAX_SEARCH = 5;
+	
 	include "/lib/funzioni_mysql.php";
 	//la grafica di questa pagina è presa da quella del sito vecchio
 	session_start();
@@ -22,8 +23,8 @@
 	}
 	
 	//salvataggio pagina di provenienza
-	if(isset($_GET['from'])){
-		$go_to = $_GET['from'];
+	if(isset($_POST['from'])){
+		$go_to = $_POST['from'];
 	}else{
 		$go_to = "ricerca.php";
 	}
@@ -45,8 +46,11 @@
 			
 			}else{
 				$ris = $data->estrai($aut);
-				if(strcmp($ris->password,$password)==0){
+				if(strcmp($ris->password,$password)==0 && $ris->stato != "D"){
 					$_SESSION["login"] = $ris->user_name;
+					if($ris->stato == "P"){
+						$_SESSION['num_Ricerche'] = $MAX_SEARCH;
+					}
 					header("Location: ".$go_to);
 				
 				}else{
@@ -82,6 +86,7 @@
 						</td></tr>
 					</table>
 				</form>
+				
 <?php
 	ac_finalizeSection();
 	ac_initSection("Se non sei registrato, clicca qu&igrave; per registrarti", false, true);

@@ -11,24 +11,57 @@
 
 <?php
 	include "/lib/funzioni_mysql.php";
+	
+	/**
+ * Redirect with POST data.
+ *
+ * @param string $url URL.
+ * @param array $post_data POST data. Example: array('foo' => 'var', 'id' => 123)
+ * @param array $headers Optional. Extra headers to send.
+ */
+function redirect_post($url, array $data, array $headers = null) {
+    $params = array(
+        'http' => array(
+            'method' => 'POST',
+            'content' => http_build_query($data)
+        )
+    );
+    if (!is_null($headers)) {
+        $params['http']['header'] = '';
+        foreach ($headers as $k => $v) {
+            $params['http']['header'] .= "$k: $v\n";
+        }
+    }
+    $ctx = stream_context_create($params);
+    $fp = @fopen($url, 'rb', false, $ctx);
+    if ($fp) {
+        echo @stream_get_contents($fp);
+        die();
+    } else {
+        // Error
+        throw new Exception("Error loading '$url', $php_errormsg");
+    }
+}
+	
+	$var = "display: none;";
 	//IL CODICE PHP LO DEVO ANCORA SISTEMARE PER QUESTA PAGINA
 	session_start();
 	if(!isset($_SESSION["login"])){
-		header("Location: index.php?from=".$_SERVER["PHP_SELF"]);
+		
+		redirect_post("index.php", array("from" => "".$_SERVER['PHP_SELF'].""));
 	}
 	
 	if(isset($_GET["prod"])){
 		$prod_id = $_GET["prod"];
 		
-		$file = 'http://127.0.0.1/AgenCavi_sito/"$prod_id".pdf';
-		$file_headers = @get_headers($file);
-		if( strcmp($file_headers[0],'HTTP/1.0 404 Not Found"') != 0 ) {
-			$exists = false;
+		if( ($file = fopen($prod_id.'.pdf', 'r')) ) {
+			$exists = true;
+			fclose($file);
 		}
 		else {
-			$exists = true;
+			$exists = false;
 		}
-		
+	
 		if($exists){
 			$data = new MysqlClass();
 			$data->connetti();
@@ -58,9 +91,7 @@
 
 		}else{
 			//PANNELLO PRODOTTO NON TROVATO
-			echo	('<script type="text/javascript" language="javascript"> 
-					
-					</script>');
+			$var = "display: block;";
 		}
 	}
 	
@@ -84,6 +115,11 @@ ac_initSection("Show/Hide", true, false);
 									</td></tr>
 								</table>
 							</form>
+							
+							<p id="error_message" style="color: red; <?php echo $var; ?>" >
+								Prodotto non trovato
+							</p>
+							
 							<h3 style="padding:10px; color:orange; font-size:150%;"> Cercati di recente </h3>
 							<ul align="justify" style="padding:20px;">
 							
