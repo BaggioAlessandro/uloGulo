@@ -42,6 +42,7 @@ function redirect_post($url, array $data, array $headers = null) {
 	if(!isset($_SESSION["login"])){
 		
 		redirect_post("index.php", array("from" => "".$_SERVER['PHP_SELF'].""));
+		die();
 	}
 	
 	if(isset($_GET["prod"])){
