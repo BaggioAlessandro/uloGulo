@@ -13,6 +13,7 @@
 <?php
 
 	include "/lib/funzioni_mysql.php";
+	include "/lib/redirect.php";
 	
 	/**
  * Redirect with POST data.
@@ -21,30 +22,23 @@
  * @param array $post_data POST data. Example: array('foo' => 'var', 'id' => 123)
  * @param array $headers Optional. Extra headers to send.
  */
-function redirect_post($url, array $data, array $headers = null) {
-	?>
-	<form method="POST" action="<?php echo $url; ?>" name="re_frm">
-	<?php 
-		foreach ( $data as $ke => $va ){
-	?>
-		<input type="hidden" name="<?php echo $ke; ?>" value="<?php echo $va; ?>" />
-	<?php
-		}
-	?>
-	</form>
-	<script language="JavaScript">
-		document.re_frm.submit();
-	</script>
-	<?php
-}
 	
 	$var = "display: none;";
 	//IL CODICE PHP LO DEVO ANCORA SISTEMARE PER QUESTA PAGINA
 	session_start();
-	if(!isset($_SESSION["login"])){
-		
-		redirect_post("index.php", array("from" => "".$_SERVER['PHP_SELF'].""));
-		die();
+	$data = new MysqlClass();
+	if($data->connetti()){
+		$aut = $data->query("SELECT user_name,password FROM ac_admin WHERE user_name= '".$_SESSION['login']."'");
+		if(!isset($_SESSION["login"])){
+			header("Location: admin.php");
+			die();
+		}elseif(mysql_num_rows($aut) == 0 ){
+			redirect_post("disc.php", array("go_to" => "admin.php"));
+			header("Location: disc.php");
+		}
+	}
+	else{
+		echo "Errore di connessione";
 	}
 	
 include "/lib/ac_base.php";

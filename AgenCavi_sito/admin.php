@@ -28,8 +28,8 @@
 		$go_to = "admin-control.php";
 	}
 	$error_message = "";
+	
 	if(isset($_POST['submit']) && trim($_POST['submit']=="Login")){
-		echo($_POST["user"]);
 		$user_name = $_POST["user"];
 		$password = trim($_POST["password"], FILTER_SANITIZE_STRING);
 		
@@ -37,7 +37,7 @@
 		$data = new MysqlClass();
 
 		if($data->connetti()){
-			$aut = $data->query("SELECT user_name,password FROM utenti WHERE user_name='$user_name'");
+			$aut = $data->query("SELECT user_name,password FROM ac_admin WHERE user_name='$user_name'");
 			
 			if(mysql_num_rows($aut) == 0 ){
 				echo "$user_name";
