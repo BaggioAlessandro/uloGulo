@@ -101,6 +101,12 @@ ac_initSection("Show/Hide", true, false);
 										if($res->telefono != null){
 											echo ",$res->telefono";
 										}	
+										echo "<form method = 'POST' style='display: inline-block; margin-left: 100px;'>";
+										echo "<button type='submit' formaction ='request_handler_acc.php' name = 'user' value = '" .$res->user_name."'>Acc</button>";
+										echo "<button type='submit' formaction ='request_handler_rif.php' name = 'user' value = '" .$res->user_name."'>Rif!</button>";
+										echo "</form>";
+										
+										echo "</li>";
 									}
 									$data->disconnetti();
 								
