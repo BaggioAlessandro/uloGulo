@@ -1,5 +1,6 @@
 <?php
 	include "/lib/funzioni_mysql.php";
+	include "/lib/redirect.php";
 	session_start();
 	$data = new MysqlClass();
 	
@@ -20,7 +21,7 @@
 			
 			$user_name = $_POST['user'];
 			$data->query("UPDATE utenti SET stato='C' WHERE user_name = '".$user_name."'");
-			header("Location: admin-control.php");
+			redirect_post("admin-control.php#request", array("from" => "handler"));
 		}
 	}else{
 		echo "Errore di connessione";

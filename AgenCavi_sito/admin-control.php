@@ -80,9 +80,14 @@ ac_initSection("Show/Hide", true, false);
 						
 <?php
 	ac_finalizeSection();
-	ac_initSection("Clicca qui per visualizzare le richieste pendenti", false, true);
+	//se arrivo da un request handler allora apro direttamente la sezione delle richieste pendenti
+	if(isset($_POST["from"]) && strcmp($_POST["from"], "handler")==0){
+		ac_initSection("Clicca qui per visualizzare le richieste pendenti", true, true);
+	}else{
+		ac_initSection("Clicca qui per visualizzare le richieste pendenti", false, true);
+	}
 ?>
-
+						<a name = "request"> </a>
 						<div 
 							<h1> Richieste Pendenti </h1>
 							<?php
