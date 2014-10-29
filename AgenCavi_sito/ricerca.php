@@ -11,6 +11,7 @@
 
 <?php
 	include "/lib/funzioni_mysql.php";
+	include "/lib/redirect.php";
 	
 	/**
  * Redirect with POST data.
@@ -19,33 +20,23 @@
  * @param array $post_data POST data. Example: array('foo' => 'var', 'id' => 123)
  * @param array $headers Optional. Extra headers to send.
  */
-function redirect_post($url, array $data, array $headers = null) {
-	?>
-	<form method="POST" action="<?php echo $url; ?>" name="re_frm">
-	<?php 
-		foreach ( $data as $ke => $va ){
-	?>
-		<input type="hidden" name="<?php echo $ke; ?>" value="<?php echo $va; ?>" />
-	<?php
-		}
-	?>
-	</form>
-	<script language="JavaScript">
-		document.re_frm.submit();
-	</script>
-	<?php
-}
-	
+
 	$error_message = "";
 	//IL CODICE PHP LO DEVO ANCORA SISTEMARE PER QUESTA PAGINA
 	session_start();
 	if(!isset($_SESSION["login"])){
-		
-		redirect_post("index.php", array("from" => "".$_SERVER['PHP_SELF'].""));
+	
+		if(isset($_GET["prod"])){
+			redirect_post("index.php", array("from" => "".$_SERVER['PHP_SELF']."?prod=".$_GET['prod'].""));
+			}
+		else{
+			header('Location: index.php');
+		}
 		die();
 	}
 	
 	if(isset($_GET["prod"])){
+		echo($_GET["prod"]);
 		$prod_id = $_GET["prod"];
 		
 		if( ($file = fopen($prod_id.'.pdf', 'r')) ) {

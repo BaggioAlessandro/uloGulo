@@ -14,6 +14,7 @@
 	$MAX_SEARCH = 5;
 	
 	include "/lib/funzioni_mysql.php";
+	
 	//la grafica di questa pagina è presa da quella del sito vecchio
 	session_start();
 	
@@ -30,15 +31,15 @@
 	}
 	
 	if(isset($_POST['submit']) && trim($_POST['submit']=="Login")){
-		str_replace($_POST["user"], '@', '\@');
-		echo($_POST["user"]);
-		$user_name = $_POST["user"];
+		
+		$user_name = $_POST['user'];
 		$password = trim($_POST["password"], FILTER_SANITIZE_STRING);
 		
 		 
 		$data = new MysqlClass();
 
 		if($data->connetti()){
+			echo "SELECT user_name,password FROM utenti WHERE user_name='$user_name'";
 			$aut = $data->query("SELECT user_name,password FROM utenti WHERE user_name='$user_name'");
 			
 			if(mysql_num_rows($aut) == 0 ){
@@ -52,6 +53,7 @@
 					if($ris->stato == "P"){
 						$_SESSION['num_Ricerche'] = $MAX_SEARCH;
 					}
+
 					header("Location: ".$go_to);
 				
 				}else{
@@ -76,7 +78,7 @@
 <!-- -.-.-.-.-.-.-.-.-.-.-.-.-.-.- SCRIVI LA TUA ROBA QUI' -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- -->
 		
 				<h1> Login </h1>
-				<form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+				<form method="POST" action="<?php echo ($_SERVER['PHP_SELF']);?>">
 					<table style="padding:20px;">
 						<tr><td>
 						Nome Utente:</td><td> <input type="text" style="width:250px;" name="user"/></td></tr>
@@ -86,6 +88,12 @@
 						<input type="submit" name="submit" value="Login" />
 						</td></tr>
 					</table>
+					<?php
+						include "/lib/redirect.php";
+						if(isset($_POST)){
+							inoltro_post($_POST);
+						}
+					?>
 				</form>
 				
 <?php
