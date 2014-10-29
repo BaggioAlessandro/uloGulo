@@ -17,16 +17,19 @@
 	session_start();
 	
 	//se esiste una connessione vai alla pagina delle ricerche
-	if(isset($_SESSION['login'])){
+	if(isset($_SESSION['admin_login'])){
 		header("Location: admin-control.php");
 	}
 	
 	//salvataggio pagina di provenienza
+	/*
 	if(isset($_POST['from'])){
 		$go_to = $_POST['from'];
 	}else{
 		$go_to = "admin-control.php";
 	}
+	*/
+	$go_to = "admin-control.php";
 	$error_message = "";
 	
 	if(isset($_POST['submit']) && trim($_POST['submit']=="Login")){
@@ -46,7 +49,7 @@
 			}else{
 				$ris = $data->estrai($aut);
 				if(strcmp($ris->password,$password)==0){
-					$_SESSION["login"] = $ris->user_name;
+					$_SESSION["admin_login"] = $ris->user_name;
 					header("Location: ".$go_to);
 				
 				}else{
