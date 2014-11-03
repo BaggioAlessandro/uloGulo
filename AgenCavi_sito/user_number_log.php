@@ -28,6 +28,9 @@
 	session_start();
 	$data = new MysqlClass();
 	
+	if(!isset($_POST["interval"])){
+		header("Location: admin-control.php");
+	}
 	if($data->connetti()){
 		$aut = $data->query("SELECT user_name FROM ac_admin WHERE user_name= '".$_SESSION['admin_login']."'");
 	
@@ -53,22 +56,49 @@ ac_initSection("Show/Hide", true, false);
 							<h1> Pannello di controllo </h1>
 							
 							<h1> statistiche </h1>
-							<form method="POST" action="user_number_log.php">
-								<table style="padding:20px;">
-								<tr><td>
-								Utente:</td><td> <input type="text" style="width:250px;" name="user"/></td></tr>
-								<tr><td>
-								Password:</td><td> <select style="width:250px;" name="interval">
-								<option value = "1">1 giorno </option>
-								<option value = "7">1 settimana </option>
-								<option value = "30">1 mese </option>
-								<option value = "1000">Da sempre </option>
-								</select></td></tr>
-								<tr><td colspan=2>
-								<input type="submit" name="submit" value="submit" />
-								</td></tr>
-							</table>
-						</form>
+							<a href="admin-control.php">back</a>
+							<?php
+								switch($_POST["interval"]){
+									case 1:
+										$interval = "INTERVAL 1 DAY";
+										break;
+									case 7:
+										$interval = "INTERVAL 1 WEEK";
+										break;
+									case 30:
+										$interval = "INTERVAL 1 MONTH";
+										break;
+									case 1000:
+										$interval = "INTERVAL 100 YEAR";
+										break;
+									default:
+										header("Location: admin-control.php");
+										break;
+								}
+								$data = new MysqlClass();
+								if($data->connetti()){
+									if(strcmp($_POST["user"],"") == 0){
+										$aut = $data->query("SELECT user_name, count(*) as number FROM `log` WHERE time_stamp > DATE_SUB(now(), " .$interval.") GROUP BY user_name");
+										}
+									else{
+										$aut = $data->query("SELECT user_name,count(*) as number FROM `log` WHERE time_stamp > DATE_SUB(now(), " .$interval.") and  user_name = ".$_POST["user"]." GROUP BY user_name");
+									}
+									if(!mysql_num_rows($aut)){
+										echo "Non ci sono state ricerche";
+									}
+									while($res = $data->estrai($aut)){
+									
+										echo "<li>
+											$res->user_name, \t$res->number";
+									}
+									$data->disconnetti();
+								
+								
+								}else{
+									echo "connessione falllita";
+								}
+								
+							?>
 							<br></br>
 							<a href="disc.php">logout</a>
 						</div>
